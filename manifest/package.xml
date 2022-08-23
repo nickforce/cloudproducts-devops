@@ -32,5 +32,20 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
+    <types>
+        <members>BatchFlow_Config__c</members>
+        <members>Batch_Flow_Sch__c</members>
+        <members>Batch_Flow_Group__c</members>
+        <members>Batch_Flow__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Batch_Flow</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Batch_Flow</members>
+        <name>CustomApplication</name>
+    </types>
     <version>55.0</version>
 </Package>
