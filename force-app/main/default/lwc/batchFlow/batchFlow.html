@@ -1,0 +1,32 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </template>
+    <c-batch-flow_page-header onloading={handleLoading}>
+    </c-batch-flow_page-header>
+    <br/>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+            <c-batch-flow_quick-find flow-schedules={flowSchs} onviewflow={handleViewFlow}></c-batch-flow_quick-find>
+        </div>
+        <div class="slds-col" style="width:100%;">  
+            <template if:false={showSchedule}>
+                <template for:each={flowSchs}
+                        for:item="flowSch">
+                    <div class="slds-box slds-theme_default" key={flowSch.Id}>
+                        <c-batch-flow_monitor-flow onviewflow={handleViewFlow} ondeleteflow={handleDeleteFlow} flow-schedule={flowSch}></c-batch-flow_monitor-flow>
+                    </div>
+                </template>
+            </template>
+            <template if:true={showSchedule}>
+                <div class="slds-box slds-theme_default">
+                    <c-batch-flow_schedule-flow onscheduling={handleScheduling} flow-id={selectedFlowId} ondoneloading={handleDoneLoading}></c-batch-flow_schedule-flow>
+                </div>
+                <div class="slds-box slds-theme_default">
+                    <c-batch-flow_job-group group-id={selectedGroupId}></c-batch-flow_job-group>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

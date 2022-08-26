@@ -1,0 +1,146 @@
+<template>
+    <div class="demo-only" style="width:30rem">
+        <article class="slds-tile slds-media">
+            <div class="slds-media__figure">
+                <span class="slds-icon_container" title="description of icon when needed">
+                    <lightning-icon 
+                        icon-name="standard:flow" 
+                        alternative-text="Flow" 
+                        title="Flow"
+                    >
+                    </lightning-icon>
+                </span>
+            </div>
+            <div class="slds-media__body">
+                <h3 class="slds-tile__title slds-truncate" title="Salesforce UX">
+                    <a href="#">New Group</a>
+                </h3>
+                <div class="slds-tile__detail">
+                    <!-- <dl class="slds-list_horizontal slds-wrap">
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate" title="First Label">First Label:</dt>
+                        <dd class="slds-item_detail slds-truncate" title="Description for first label">Description for first label</dd>
+                        <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Second Label">Second Label:</dt>
+                        <dd class="slds-item_detail slds-truncate" title="Description for second label">Description for second label</dd>
+                    </dl> -->
+                    <!-- <div style="width: 600px">
+                        <lightning-pill-container
+                            items={items}
+                            is-collapsible
+                            is-expanded={isExpanded}
+                        >
+                        </lightning-pill-container>
+                    </div>
+                    <lightning-button onclick={setExpanded} label="Expand and Collapse"></lightning-button> -->
+
+
+                    <div class="slds-pill_container">
+                        <div class="slds-assistive-text" id="listbox-pill-default">Press delete or backspace to remove</div>
+                        <ul class="slds-listbox slds-listbox_horizontal" role="listbox" aria-label="Selected Options:" aria-orientation="horizontal" aria-describedby="listbox-pill-default">
+                            <li class="slds-listbox-item" role="presentation">
+                                <span class="slds-pill slds-pill_link">
+                                    <a href="#" class="slds-pill__action" title="Full pill label verbiage mirrored here">
+                                        <span class="slds-pill__label">LeadProcessor</span>
+                                    </a>
+                                    <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="Remove">
+                                        <lightning-icon
+                                            icon-name="utility:close"
+                                            size="small"
+                                            alternative-text="Close"
+                                        >
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Remove</span>
+                                    </button>
+                                </span>
+                                <span class="slds-pill slds-pill_link">
+                                    <a href="#" class="slds-pill__action" title="Full pill label verbiage mirrored here">
+                                        <span class="slds-pill__label">ContactMonthlySync</span>
+                                    </a>
+                                    <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="Remove">
+                                        <lightning-icon
+                                            icon-name="utility:close"
+                                            size="small"
+                                            alternative-text="Close"
+                                        >
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Remove</span>
+                                    </button>
+                                </span>
+                                <span class="slds-pill slds-pill_link">
+                                    <a href="#" class="slds-pill__action" title="Full pill label verbiage mirrored here">
+                                        <span class="slds-pill__label">(10)BillingSync</span>
+                                    </a>
+                                    <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="Remove">
+                                        <lightning-icon
+                                            icon-name="utility:close"
+                                            size="small"
+                                            alternative-text="Close"
+                                        >
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Remove</span>
+                                    </button>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </article>
+    </div>
+
+
+
+    
+               
+
+     
+    
+    
+    <br/>
+    <template if:false={newJobForm}>
+        <lightning-button 
+            icon-name="utility:add" title="Non-primary action" 
+            onclick={handleNewJob} class="slds-m-left_x-small"></lightning-button>
+    </template>
+    <br/>
+    <template if:true={newJobForm}>
+        <div class="slds-form">
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01">Apex Class</label>
+                <div class="slds-form-element__control">
+                    <lightning-combobox class="slds-align-middle"
+                        name="batchApexClasses"
+                        value={selectedBatchApexClass}
+                        placeholder="Batch Apex Classes"
+                        options={apexClassOptions}
+                        onchange={setBatchApexClass}>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="slider-id-01">
+                    <span class="slds-slider-label">
+                        <span class="slds-slider-label__label">Scope</span>
+                        <!-- <span class="slds-slider-label__range">1-200</span> -->
+                    </span>
+                </label>
+                <div class="slds-form-element__control">
+                    <lightning-slider
+                        step="1"
+                        min="1"
+                        max="200"
+                        value={selectedScope}
+                        onchange={handleChangeScope}
+                    >
+                    </lightning-slider>
+                </div>
+            </div>
+            <br/>
+            <lightning-button label="Save" title="Non-primary action" onclick={handleSaveJob}></lightning-button>
+            <lightning-button label="Cancel" title="Non-primary action" onclick={handleCancelNewJob}></lightning-button>
+        </div>
+    </template>
+</template>

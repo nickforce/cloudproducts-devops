@@ -11,6 +11,7 @@
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <label>Batch Flow</label>
     <navType>Standard</navType>
+    <tabs>Batch_Flow</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Batch_Flow_UtilityBar</utilityBar>
 </CustomApplication>

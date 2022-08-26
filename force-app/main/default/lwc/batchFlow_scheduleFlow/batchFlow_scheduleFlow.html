@@ -1,0 +1,116 @@
+<template>
+    <div class="slds-form">
+        <div class="slds-form" role="list">
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                        <label class="slds-form-element__label" for="single-form-element-id-02">Start/End</label>
+                        <div class="slds-form-element__control">
+                            <lightning-input
+                                label="Start"
+                                type="date" 
+                                name="input122" 
+                                placeholder="02/10/22"
+                                onchange={handleStartDateChange}
+                                required
+                            >
+                            </lightning-input>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_horizontal slds-is-editing">
+                        <!-- <label class="slds-form-element__label" for="single-form-element-id-03">End</label> -->
+                        <div class="slds-form-element__control">
+                            <lightning-input 
+                                label="End"
+                                type="date" 
+                                name="input133" 
+                                placeholder="02/10/24"
+                                onchange={handleEndDateChange}
+                                required
+                            >
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <fieldset class="slds-form-element slds-form-element_horizontal">
+            <legend class="slds-form-element__label">Name</legend>
+            <div class="slds-form-element__control">
+                <lightning-input
+                    label="Name"    
+                    type="text" 
+                    name="single-form-element-id-024224"
+                    value={name}
+                    onchange={handleNewBatchFlowSchNameChange}
+                    required
+                >
+                </lightning-input>
+            </div>
+        </fieldset>
+        <fieldset class="slds-form-element slds-form-element_horizontal">
+            <legend class="slds-form-element__label">Frequency</legend>
+            <div class="slds-form-element__control">
+                <span class="slds-radio">
+                    <lightning-radio-group name="radioGroup"
+                            label="Frequency"
+                            options={frequencyOptions}
+                            value={selectedFrequencyOption}
+                            type="radio"
+                            onchange={handleFrequencyOptionChange}
+                            required
+                    >
+                    </lightning-radio-group>
+                </span>
+            </div>
+        </fieldset>
+        <template if:true={showOnDayOptions}>
+            <fieldset class="slds-form-element slds-form-element_horizontal">
+                <legend class="slds-form-element__label">On day</legend>
+                <div class="slds-form-element__control">
+                    <lightning-combobox class="slds-align-middle"
+                        name="boatTypes"
+                        value={selectedDayOfMonth}
+                        placeholder="On day.."
+                        options={daysOfMonth}
+                        onchange={handleDayOfMonthOptionChange}
+                        required>
+                    </lightning-combobox>
+                </div>
+            </fieldset>
+        </template>
+        <fieldset class="slds-form-element slds-form-element_horizontal">
+            <legend class="slds-form-element__label">Preferred start time</legend>
+            <div class="slds-form-element__control">
+                <lightning-input
+                    placeholder="--None--"
+                    type="time" 
+                    name="input1"
+                    onchange={handlePreferredStartTimeChange}
+                    required
+                >
+                </lightning-input>
+            </div>
+        </fieldset>
+        <fieldset class="slds-form-element slds-form-element_horizontal">
+            <legend class="slds-form-element__legend">Exact start time will depend on job queue activity.</legend>
+        </fieldset>
+
+        <br/>
+
+        <ul class="slds-button-group-row">
+            <!-- <li class="slds-button-group-item">
+                <button class="slds-button slds-button_neutral">Refresh</button>
+            </li> -->
+            <li class="slds-button-group-item">
+                <button class="slds-button slds-button_neutral">Cancel</button>
+            </li>
+            <li class="slds-button-group-item">
+                <button class="slds-button slds-button_brand" onclick={handleSaveBatchFlowSch}>Save</button>
+            </li>
+        </ul>
+    </div>
+</template>

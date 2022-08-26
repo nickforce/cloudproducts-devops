@@ -1,4 +1,27 @@
-public with sharing class BatchFlowDataService {
+public without sharing class BatchFlowDataService {
+    
+    @AuraEnabled(cacheable=true scope='global')
+    public static List<LookupSearchResult> search(String searchTerm, List<String> selectedIds, String country) {
+        searchTerm = '%' + searchTerm + '%';
+        
+        List<ApexClass> locations = [
+            SELECT Name, Id
+            FROM ApexClass
+            WHERE
+                Name LIKE :searchTerm
+                AND Id NOT IN :selectedIds
+                AND NamespacePrefix = null
+                AND Name != 'BatchFlow'
+            LIMIT 5
+        ];
+        // Prepare results
+        List<LookupSearchResult> results = new List<LookupSearchResult>();
+        for (ApexClass entry : locations) {
+            results.add(new LookupSearchResult(entry.Id, null, null, entry.Name, null));
+        }
+        return results;
+    }
+    
     @AuraEnabled(cacheable=true)
     public static List<ApexClass> getBatchApexClasses() {
         List<ApexClass> classList = new List<ApexClass>();

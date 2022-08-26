@@ -1,0 +1,60 @@
+<template>
+    <div class="demo-only slds-box slds-theme_default" style="width:320px">
+        <nav class="slds-nav-vertical" aria-label="Sub page">
+            <div class="slds-form-element slds-p-horizontal_large">
+                <label class="slds-form-element__label slds-assistive-text" for="input-id-01">Filter navigation items</label>
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                    <span class="slds-icon_container slds-icon-utility-search">
+                        <lightning-icon 
+                            aria-hidden="true"
+                            class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                            icon-name="utility:search" 
+                            alternative-text="search" 
+                            title="search"
+                            size="xx-small"
+                        >
+                        </lightning-icon>
+                    </span>
+                    <input type="search" id="input-id-01" placeholder="Quick Find" class="slds-input" />
+                </div>
+            </div>
+            <div class="slds-nav-vertical__section">
+                <h2 id="entity-header" class="slds-nav-vertical__title">Daily</h2>
+                <ul aria-describedby="entity-header">
+                    <li class="slds-nav-vertical__item slds-is-active">
+                        <a href="#" class="slds-nav-vertical__action" aria-current="true">Recent</a>
+                    </li>
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">Created by Me</a>
+                    </li>
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">Private Reports</a>
+                    </li>
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">Public Reports</a>
+                    </li>
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">All Reports</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="slds-nav-vertical__section">
+                <h2 id="folder-header" class="slds-nav-vertical__title">Monthly</h2>
+                <ul aria-describedby="folder-header">
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">Created by Me</a>
+                    </li>
+                    <li class="slds-nav-vertical__item">
+                        <a href="#" class="slds-nav-vertical__action">Shared with Me</a>
+                    </li>
+                    <template for:each={flowSchedules}
+                        for:item="flowSch">
+                        <li class="slds-nav-vertical__item" key={flowSch.Id}>
+                            <a href="#" onclick={handleViewFlow} data-value={flowSch.Id} class="slds-nav-vertical__action">{flowSch.Name}</a>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</template>
