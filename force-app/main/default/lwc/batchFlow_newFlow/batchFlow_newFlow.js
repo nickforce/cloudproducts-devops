@@ -1,7 +1,9 @@
 import { LightningElement, wire, track } from 'lwc';
- 
+
 import getBatchApexClasses from '@salesforce/apex/BatchFlowDataService.getBatchApexClasses'
 export default class BatchFlow_newFlow extends LightningElement {
+    
+    
     selectedBatchApexClass = ''
 
     // private '
@@ -24,4 +26,6 @@ export default class BatchFlow_newFlow extends LightningElement {
             this.error = error
         }
     }
+
+
 }

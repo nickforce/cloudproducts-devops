@@ -1,8 +1,9 @@
 import { LightningElement, track, wire, api } from 'lwc';
-
+import apexSearch from '@salesforce/apex/BatchFlowDataService.search';
 import getBatchApexClasses from '@salesforce/apex/BatchFlowDataService.getBatchApexClasses'
 import upsertBatchFlow from '@salesforce/apex/BatchFlowDataService.upsertBatchFlow'
 export default class BatchFlow_jobGroup extends LightningElement {
+    @track initialSelection = []
     @api groupId;
     @api editBatchFlowId;
     @track newJobForm = false;
@@ -147,5 +148,26 @@ export default class BatchFlow_jobGroup extends LightningElement {
             this.apexClassOptions = undefined
             this.error = error
         }
+    }
+
+    handleSelectionChange(event) {
+        const selectedIds = event.detail;
+        const selection = event.target.getSelection();
+        this.initialSelection = selection
+    }
+
+    @track isMultiEntry = true
+    handleSearch(event) {
+        const lookupElement = event.target;
+        let evtDetailCountry = event.detail
+        evtDetailCountry.country = this.value
+        
+        apexSearch(evtDetailCountry)
+            .then(results => {
+                lookupElement.setSearchResults(results);
+            })
+            .catch(error => {
+                
+            });
     }
 }

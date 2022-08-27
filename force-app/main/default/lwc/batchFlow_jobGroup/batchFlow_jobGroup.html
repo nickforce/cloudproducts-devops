@@ -120,6 +120,16 @@
                 </div>
             </div>
 
+            <c-lookup
+                onselectionchange={handleSelectionChange}
+                selection={initialSelection}
+                onsearch={handleSearch}
+                label="Search"
+                is-multi-entry={isMultiEntry}
+                data-custom="My custom value"
+            >
+            </c-lookup>
+
             <div class="slds-form-element slds-form-element_horizontal">
                 <label class="slds-form-element__label" for="slider-id-01">
                     <span class="slds-slider-label">
