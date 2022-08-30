@@ -156,7 +156,7 @@ export default class BatchFlow_jobGroup extends LightningElement {
         this.initialSelection = selection
     }
 
-    @track isMultiEntry = true
+    @track isMultiEntry = false
     handleSearch(event) {
         const lookupElement = event.target;
         let evtDetailCountry = event.detail
