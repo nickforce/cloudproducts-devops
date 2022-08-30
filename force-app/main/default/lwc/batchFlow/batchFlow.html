@@ -151,6 +151,9 @@
             </template>
             <template if:true={showSchedule}>
                 <div class="slds-box slds-theme_default">
+                    <c-batch-flow_monitor-flow onviewflow={handleViewFlow} ondeleteflow={handleDeleteFlow} flow-schedule={selectedFlowId}></c-batch-flow_monitor-flow>
+                </div>
+                <div class="slds-box slds-theme_default slds-hide">
                     <c-batch-flow_schedule-flow onscheduling={handleScheduling} flow-id={selectedFlowId} ondoneloading={handleDoneLoading}></c-batch-flow_schedule-flow>
                 </div>
                 <div class="slds-box slds-theme_default">
