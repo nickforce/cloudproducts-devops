@@ -123,16 +123,7 @@
                     </div>
                 </div>
                 <br/><br/>
-
-                
             </div>
-
-
-
-
-
-
-
         </div>  
     </c-modal>
     <br/>
@@ -151,11 +142,24 @@
             </template>
             <template if:true={showSchedule}>
                 <div class="slds-box slds-theme_default">
-                    <c-batch-flow_monitor-flow onviewflow={handleViewFlow} ondeleteflow={handleDeleteFlow} flow-schedule={selectedFlowId}></c-batch-flow_monitor-flow>
+                    <!-- <c-batch-flow_monitor-flow 
+                        onscheduling={handleScheduling} 
+                        ondoneloading={handleDoneLoading} 
+                        onviewflow={handleViewFlow} 
+                        ondeleteflow={handleDeleteFlow} 
+                        flow-schedule={selectedFlow}
+                    >
+                    </c-batch-flow_monitor-flow> -->
+                    <c-batch-flow_view-flow-schedule
+                        ondoneloading={handleDoneLoading}
+                        ondeleteflow={handleDeleteFlow} 
+                        flow-schedule={selectedFlow}
+                    >
+                    </c-batch-flow_view-flow-schedule>
                 </div>
-                <div class="slds-box slds-theme_default slds-hide">
-                    <c-batch-flow_schedule-flow onscheduling={handleScheduling} flow-id={selectedFlowId} ondoneloading={handleDoneLoading}></c-batch-flow_schedule-flow>
-                </div>
+                <!-- <div class="slds-box slds-theme_default slds-hide">
+                    <c-batch-flow_schedule-flow onscheduling={handleScheduling} flow-id={selectedFlow} ondoneloading={handleDoneLoading}></c-batch-flow_schedule-flow>
+                </div> -->
                 <div class="slds-box slds-theme_default">
                     <c-batch-flow_job-group group-id={selectedGroupId}></c-batch-flow_job-group>
                 </div>

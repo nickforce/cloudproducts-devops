@@ -67,13 +67,15 @@ export default class BatchFlow extends LightningElement {
         
         refreshApex(this.refreshTable)
     }
-    selectedFlowId;
+    @track selectedFlow;
     isLoading = false;
     handleViewFlow(evt) { // async 
         this.isLoading = true;
         this.showSchedule = true;
-        this.selectedFlowId = evt.detail;
-        console.log('handleViewFlow' + this.selectedFlowId);
+        this.selectedFlow = evt.detail;
+        console.log('44444444444444444')
+        console.log(JSON.stringify(evt.detail))
+        console.log('handleViewFlow' + this.selectedFlow);
 
         // await this.loadBatchFlowSchedule();
 
