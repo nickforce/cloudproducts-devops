@@ -65,7 +65,8 @@ public without sharing class BatchFlowDataService {
             Batch_Flow_Sch__c.class
         );
 
-        return [SELECT Id, Name
+        return [SELECT Id, Name, Frequency__c, Day_of_Month__c,
+                    Start_Date__c, End_Date__c, Preferred_Start_Time__c
                 FROM Batch_Flow_Sch__c
                 WHERE Id = :selectedBatchFlowSch.Id
                 LIMIT 1][0];

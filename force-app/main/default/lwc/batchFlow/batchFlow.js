@@ -5,12 +5,15 @@ import { getRecord, createRecord, getFieldValue, deleteRecord } from 'lightning/
 import Batch_Flow_Sch__c from '@salesforce/schema/Batch_Flow_Sch__c';
 import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement, api, track, wire } from 'lwc';
+import querySelectedBatchFlowSch from '@salesforce/apex/BatchFlowDataService.querySelectedBatchFlowSch'
 
 export default class BatchFlow extends LightningElement {
     @track flowSchForm = {}
     @api flowId = ''
     flowSch = {}
-    newBatchFlowSchName = ''
+    @track newBatchFlowSchName = ''
+    @track editFlowSchId = ''
+    @track queryFlowSch = {}
 
     @track strMessage = '';
     @api selectedBatchFlowSchId
@@ -27,6 +30,52 @@ export default class BatchFlow extends LightningElement {
             this.flowSchForm = {}
             console.log('play found')
             player.show();
+        }
+    }
+    async playEdit() {
+        const player = this.template.querySelector('c-modal');
+        console.log('play')
+        // the player might not be in the DOM just yet
+        if (player) {
+            
+            
+            this.flowSchForm = {}
+            await this.handleQuerySelectedBatchFlowSch();
+            player.show();
+            console.log('play found')
+        }
+    }
+    async handleQuerySelectedBatchFlowSch() {
+        const selectedBatchFlowSch = {
+            Id: this.editFlowSchId
+        }
+        if(selectedBatchFlowSch) {
+            querySelectedBatchFlowSch({data: selectedBatchFlowSch})
+             .then(result => {
+                console.log('handleQuerySelectedBatchFlowSch22222222')
+                console.log(JSON.stringify(result))
+                // console.log(result.data.fields.Name)
+                // console.log(result[0].Name)
+                this.queryFlowSch = result
+                // this.queryFlowSch = result.map(type => {
+                //     return {
+                //         Name: type.Name
+                //     }
+                // })
+                //this.queryFlowSch.Name = result.Name
+                
+                this.flowSchForm = result
+                this.newBatchFlowSchName = this.flowSchForm.Name
+                console.log('parse 8888888' + this.newBatchFlowSchName)
+             })
+             .catch(error => {
+
+             })
+             .finally(() => {
+                // this.queryFlowSch = data
+                console.log('2')
+                console.log(this.queryFlowSch)
+             })
         }
     }
 
@@ -53,6 +102,13 @@ export default class BatchFlow extends LightningElement {
         console.log('event here')
         //this.showSchedule = true;
         this.play()
+    }
+    handleEditFlow(evt) {
+        console.log('event edit-flow' + evt.detail)
+        console.log(JSON.stringify(evt.detail))
+        this.editFlowSchId = evt.detail
+        
+        this.playEdit()
     }
     handleScheduling() {
         console.log('handleScheduling event here')
@@ -239,6 +295,7 @@ export default class BatchFlow extends LightningElement {
     handleNewBatchFlowSchNameChange(event) {
         this.newBatchFlowSchName = event.detail.value
         this.flowSchForm.name = this.newBatchFlowSchName
+        console.log(this.newBatchFlowSchName)
     }
     handlePreferredStartTimeChange(event) {
         this.flowSchForm.preferredStartTime = event.detail.value
