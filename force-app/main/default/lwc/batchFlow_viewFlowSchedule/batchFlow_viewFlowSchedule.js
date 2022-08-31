@@ -26,6 +26,14 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
         console.log('deleteflow event sent')
     }
 
+    handleEditFlow(event) {
+        console.log(event.currentTarget.dataset.value)
+        const detail = event.currentTarget.dataset.value
+        const editFlowEvent = new CustomEvent("editflow", { detail: detail });
+        this.dispatchEvent(editFlowEvent);
+        console.log('editflow event sent')
+    }
+
     async handleQuerySelectedBatchFlowSch() {
         const selectedBatchFlowSch = {
             Id: this.flowSchedule
