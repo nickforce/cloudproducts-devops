@@ -59,7 +59,7 @@ public without sharing class BatchFlowDataService {
         return 'Success: Batch Flow upserted successfully';
     }
     @AuraEnabled(cacheable=true)
-    public static List<Batch_Flow_Sch__c> querySelectedBatchFlowSch(Object data){
+    public static Batch_Flow_Sch__c querySelectedBatchFlowSch(Object data){
         Batch_Flow_Sch__c selectedBatchFlowSch = (Batch_Flow_Sch__c)JSON.deserialize(
             JSON.serialize(data),
             Batch_Flow_Sch__c.class
@@ -68,7 +68,7 @@ public without sharing class BatchFlowDataService {
         return [SELECT Id, Name
                 FROM Batch_Flow_Sch__c
                 WHERE Id = :selectedBatchFlowSch.Id
-                LIMIT 1];
+                LIMIT 1][0];
     }
     @AuraEnabled
     public static string upsertBatchFlowSch(Object data){

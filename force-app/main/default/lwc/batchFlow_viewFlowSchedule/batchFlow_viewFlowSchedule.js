@@ -3,7 +3,7 @@ import querySelectedBatchFlowSch from '@salesforce/apex/BatchFlowDataService.que
 
 export default class BatchFlow_viewFlowSchedule extends LightningElement {
     @api flowSchedule = ''
-    @track queryFlowSch
+    @track queryFlowSch = {}
 
     connectedCallback() {
         console.log(JSON.stringify(this.flowSchedule))
@@ -33,14 +33,17 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
         if(selectedBatchFlowSch) {
             querySelectedBatchFlowSch({data: selectedBatchFlowSch})
              .then(result => {
+                console.log('handleQuerySelectedBatchFlowSch22222222')
                 console.log(JSON.stringify(result))
-                console.log(result.data.fields.Name)
-                console.log(result[0].Name)
-                this.queryFlowSch = result.map(type => {
-                    return {
-                        Name: type.Name
-                    }
-                })
+                // console.log(result.data.fields.Name)
+                // console.log(result[0].Name)
+                this.queryFlowSch = result
+                // this.queryFlowSch = result.map(type => {
+                //     return {
+                //         Name: type.Name
+                //     }
+                // })
+                //this.queryFlowSch.Name = result.Name
              })
              .catch(error => {
 
