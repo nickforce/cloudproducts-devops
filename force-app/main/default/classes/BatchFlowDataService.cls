@@ -58,7 +58,7 @@ public without sharing class BatchFlowDataService {
         upsert upsertBatchFlow;
         return 'Success: Batch Flow upserted successfully';
     }
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Batch_Flow_Sch__c querySelectedBatchFlowSch(Object data){
         Batch_Flow_Sch__c selectedBatchFlowSch = (Batch_Flow_Sch__c)JSON.deserialize(
             JSON.serialize(data),

@@ -6,11 +6,11 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
     @track queryFlowSch = {}
 
     connectedCallback() {
-        console.log(JSON.stringify(this.flowSchedule))
-        console.log('scheduleFlow' + this.flowSchedule.Name)
+        //console.log(JSON.stringify(this.flowSchedule))
+        //console.log('scheduleFlow' + this.flowSchedule.Name)
         //
         setTimeout(() => {
-            console.log('scheduleFlow' + this.flowSchedule)
+            //console.log('scheduleFlow' + this.flowSchedule)
             if(this.flowSchedule) {
                 this.handleQuerySelectedBatchFlowSch();
             }
@@ -19,19 +19,19 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
     }
     
     handleDeleteFlow(event) {
-        console.log(event.currentTarget.dataset.value)
+        //console.log(event.currentTarget.dataset.value)
         const detail = event.currentTarget.dataset.value
         const deleteFlowEvent = new CustomEvent("deleteflow", { detail: detail });
         this.dispatchEvent(deleteFlowEvent);
-        console.log('deleteflow event sent')
+        //console.log('deleteflow event sent')
     }
 
     handleEditFlow(event) {
-        console.log(event.currentTarget.dataset.value)
+        //console.log(event.currentTarget.dataset.value)
         const detail = event.currentTarget.dataset.value
         const editFlowEvent = new CustomEvent("editflow", { detail: detail });
         this.dispatchEvent(editFlowEvent);
-        console.log('editflow event sent')
+        //console.log('editflow event sent')
     }
 
     async handleQuerySelectedBatchFlowSch() {
@@ -41,8 +41,7 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
         if(selectedBatchFlowSch) {
             querySelectedBatchFlowSch({data: selectedBatchFlowSch})
              .then(result => {
-                console.log('handleQuerySelectedBatchFlowSch22222222')
-                console.log(JSON.stringify(result))
+                //console.log(JSON.stringify(result))
                 // console.log(result.data.fields.Name)
                 // console.log(result[0].Name)
                 this.queryFlowSch = result
@@ -58,8 +57,8 @@ export default class BatchFlow_viewFlowSchedule extends LightningElement {
              })
              .finally(() => {
                 // this.queryFlowSch = data
-                console.log('2')
-                console.log(this.queryFlowSch)
+                //console.log('2')
+                //console.log(this.queryFlowSch)
              })
         }
     }

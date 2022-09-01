@@ -1,7 +1,7 @@
 import getBatchFlowSchedules from '@salesforce/apex/BatchFlowDataService.getBatchFlowSchedules'
 import noHeader from '@salesforce/resourceUrl/noHeader';
 import { refreshApex } from '@salesforce/apex';
-import { getRecord, createRecord, getFieldValue, deleteRecord } from 'lightning/uiRecordApi';
+import { getRecord, updateRecord, createRecord, getFieldValue, deleteRecord } from 'lightning/uiRecordApi';
 import Batch_Flow_Sch__c from '@salesforce/schema/Batch_Flow_Sch__c';
 import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement, api, track, wire } from 'lwc';
@@ -12,8 +12,12 @@ export default class BatchFlow extends LightningElement {
     @api flowId = ''
     flowSch = {}
     @track newBatchFlowSchName = ''
+    @track newBatchFlowSchStartDate = ''
+    @track newBatchFlowSchEndDate = ''
+    @track newBatchFlowSchPreferredStartTime
     @track editFlowSchId = ''
     @track queryFlowSch = {}
+    @track modalState = 'Create'
 
     @track strMessage = '';
     @api selectedBatchFlowSchId
@@ -23,16 +27,18 @@ export default class BatchFlow extends LightningElement {
     }
     
     play() {
+        this.modalState = 'Create'
         const player = this.template.querySelector('c-modal');
-        console.log('play')
+        //console.log('play')
         // the player might not be in the DOM just yet
         if (player) {
             this.flowSchForm = {}
-            console.log('play found')
+            //console.log('play found')
             player.show();
         }
     }
     async playEdit() {
+        this.modalState = 'Edit'
         const player = this.template.querySelector('c-modal');
         console.log('play')
         // the player might not be in the DOM just yet
@@ -42,7 +48,7 @@ export default class BatchFlow extends LightningElement {
             this.flowSchForm = {}
             await this.handleQuerySelectedBatchFlowSch();
             player.show();
-            console.log('play found')
+            //console.log('play found')
         }
     }
     async handleQuerySelectedBatchFlowSch() {
@@ -52,8 +58,7 @@ export default class BatchFlow extends LightningElement {
         if(selectedBatchFlowSch) {
             querySelectedBatchFlowSch({data: selectedBatchFlowSch})
              .then(result => {
-                console.log('handleQuerySelectedBatchFlowSch22222222')
-                console.log(JSON.stringify(result))
+                console.log('query result ' + JSON.stringify(result))
                 // console.log(result.data.fields.Name)
                 // console.log(result[0].Name)
                 this.queryFlowSch = result
@@ -64,30 +69,88 @@ export default class BatchFlow extends LightningElement {
                 // })
                 //this.queryFlowSch.Name = result.Name
                 
-                this.flowSchForm = result
+                this.flowSchForm = result // remove this because api names?
                 this.newBatchFlowSchName = this.flowSchForm.Name
-                console.log('parse 8888888' + this.newBatchFlowSchName)
+                this.newBatchFlowSchStartDate = this.flowSchForm.Start_Date__c
+                this.newBatchFlowSchEndDate = this.flowSchForm.End_Date__c
+                this.newBatchFlowSchPreferredStartTime = this.msToTime(this.flowSchForm.Preferred_Start_Time__c)
+                this.showOnDayOptions = false
+                this.selectedFrequencyOption = this.flowSchForm.Frequency__c
+                if(this.selectedFrequencyOption === 'Monthly') {
+                    this.showOnDayOptions = true
+                }
+                //this.flowSchForm.frequency = this.selectedFrequencyOption
+                this.selectedDayOfMonth = this.flowSchForm.Day_of_Month__c
+                //this.flowSchForm.dayOfMonth = this.selectedDayOfMonth
+                
+                //console.log('parse 8888888' + this.selectedDayOfMonth)
+                //console.log('parse 8888888' + this.newBatchFlowSchStartDate)
              })
              .catch(error => {
-
+                console.log('query error: ',error);
              })
              .finally(() => {
                 // this.queryFlowSch = data
-                console.log('2')
-                console.log(this.queryFlowSch)
+                //console.log('2')
+                console.log('finally,query result ' + this.queryFlowSch)
              })
         }
     }
 
     closeModal() {
         const player = this.template.querySelector('c-modal');
-        console.log('play')
+        //console.log('play')
         // the player might not be in the DOM just yet
         if (player) {
             this.flowSchForm = {}
-            console.log('play found')
+            //console.log('play found')
             player.hide();
         }
+    }
+
+    msToTime(s) {
+        /*
+        Divide the milliseconds by 1000 to get the seconds.
+        Divide the seconds by 60 to get the minutes.
+        Divide the minutes by 60 to get the hours.
+        Add a leading zero if the values are less than 10 to format them consistently.
+        */
+        let seconds = s / 1000
+        let minutes = seconds / 60
+        let hours = minutes / 60
+        console.log('hours ' + hours)
+        let fHours = ''
+        let fMinutes = '00'
+        if(String(hours).includes('.')) {
+            fHours = String(hours).substring(0, String(hours).indexOf('.'))
+            // if(fHours>12) {
+            //     fHours = fHours - 12
+            // }
+            // else if(fHours==='0') {
+            //     fHours = 12
+            // }
+            if(fHours==='0') {
+                fHours = '00'
+            }
+            fMinutes = 60*(String(hours).substring(String(hours).indexOf('.'), String(hours).length))
+        }
+        else {
+            fHours = String(hours)
+            if(fHours==='0') {
+                fHours = '00'
+            }
+            // if(fHours>12) {
+            //     fHours = fHours - 12
+            // }
+            // else if(fHours==='0') {
+            //     fHours = 12
+            // }
+            console.log(fHours)
+        }
+
+        //let ampm = hours > 12 ? ' PM' : ' AM'
+        //return fHours + ':' + fMinutes + ampm
+        return fHours + ':' + fMinutes + ':00.000'
     }
 
     
@@ -99,7 +162,7 @@ export default class BatchFlow extends LightningElement {
         this.showSchedule = false;
     }
     handleLoading() {
-        console.log('event here')
+        //console.log('event here')
         //this.showSchedule = true;
         this.play()
     }
@@ -111,7 +174,7 @@ export default class BatchFlow extends LightningElement {
         this.playEdit()
     }
     handleScheduling() {
-        console.log('handleScheduling event here')
+        //console.log('handleScheduling event here')
         this.refreshSchedules()
         this.showSchedule = false;
         
@@ -129,9 +192,9 @@ export default class BatchFlow extends LightningElement {
         this.isLoading = true;
         this.showSchedule = true;
         this.selectedFlow = evt.detail;
-        console.log('44444444444444444')
-        console.log(JSON.stringify(evt.detail))
-        console.log('handleViewFlow' + this.selectedFlow);
+        //console.log('44444444444444444')
+        //console.log(JSON.stringify(evt.detail))
+        //console.log('handleViewFlow' + this.selectedFlow);
 
         // await this.loadBatchFlowSchedule();
 
@@ -184,13 +247,13 @@ export default class BatchFlow extends LightningElement {
     }
 
     showOnDayOptions = false
-    selectedFrequencyOption = ''
+    @track selectedFrequencyOption = ''
     @track frequencyOptions = [
         {'label': 'Daily', 'value': 'Daily'},
         {'label': 'Monthly', 'value': 'Monthly'}
     ]
     
-    selectedDayOfMonth = ''
+    @track selectedDayOfMonth = ''
     @track daysOfMonth = [
         {label: '1', value: '1'},
         {label: '2', value: '2'},
@@ -228,11 +291,10 @@ export default class BatchFlow extends LightningElement {
         if(this.selectedFrequencyOption === 'Monthly') {
             this.showOnDayOptions = true
         }
-        this.flowSchForm.frequency = this.selectedFrequencyOption
     }
     handleDayOfMonthOptionChange(event) {
+        
         this.selectedDayOfMonth = event.detail.value;
-        this.flowSchForm.dayOfMonth = this.selectedDayOfMonth
     }
 
     handleSaveBatchFlowSch(){
@@ -246,7 +308,7 @@ export default class BatchFlow extends LightningElement {
                                             return validSoFar && inputCmp.checkValidity();
                                         }, true);
 
-        let flowSchForm = this.flowSchForm;
+        // let flowSchForm = this.flowSchForm;
         // form validation here
         //
         if(isRequiredValFilledInForm){
@@ -261,22 +323,38 @@ export default class BatchFlow extends LightningElement {
     async upsertBatchFlowSchForm() {
 
         let flowSchForm = this.flowSchForm;
+        // const fields = {
+        //     Name: flowSchForm.name,
+        //     Frequency__c: flowSchForm.frequency,
+        //     Day_of_Month__c: flowSchForm.dayOfMonth,
+        //     Start_Date__c: flowSchForm.startDate,
+        //     End_Date__c: flowSchForm.endDate,
+        //     Preferred_Start_Time__c: flowSchForm.preferredStartTime
+        // }
+
         const fields = {
-            //Id: this.flowId,
-            Name: flowSchForm.name,
-            Frequency__c: flowSchForm.frequency,
-            Day_of_Month__c: flowSchForm.dayOfMonth,
-            Start_Date__c: flowSchForm.startDate,
-            End_Date__c: flowSchForm.endDate,
-            Preferred_Start_Time__c: flowSchForm.preferredStartTime
+            Name: this.newBatchFlowSchName,
+            Frequency__c: this.selectedFrequencyOption,
+            Day_of_Month__c: this.selectedDayOfMonth,
+            Start_Date__c: this.newBatchFlowSchStartDate,
+            End_Date__c: this.newBatchFlowSchEndDate,
+            Preferred_Start_Time__c: this.newBatchFlowSchPreferredStartTime,
         }
 
-        const recordInput = { 
+        if(this.editFlowSchId != '') {
+            fields.Id = this.editFlowSchId
+        }
+
+        const createRecordInput = { 
             apiName: Batch_Flow_Sch__c.objectApiName, 
             fields 
         };
 
-        createRecord(recordInput)
+        const updateRecordInput = { 
+            fields,
+        };
+
+        updateRecord(updateRecordInput)
         .then(result => {
             this.flowSch = result;
             this.dispatchEvent(new CustomEvent('scheduling'));
@@ -289,22 +367,24 @@ export default class BatchFlow extends LightningElement {
         })
         .catch(error => {
             this.isLoading = false;
-            console.log('createRecord error: ',error);
+            console.log('upsertRecord error: ',error);
         });
     }
     handleNewBatchFlowSchNameChange(event) {
         this.newBatchFlowSchName = event.detail.value
-        this.flowSchForm.name = this.newBatchFlowSchName
-        console.log(this.newBatchFlowSchName)
+        
     }
     handlePreferredStartTimeChange(event) {
-        this.flowSchForm.preferredStartTime = event.detail.value
+        
+        this.newBatchFlowSchPreferredStartTime = event.detail.value
     }
+    
     handleStartDateChange(event) {
-        console.log('handleStartDateChange')
-        this.flowSchForm.startDate = event.detail.value
+        this.newBatchFlowSchStartDate = event.detail.value
+
     }
     handleEndDateChange(event) {
-        this.flowSchForm.endDate = event.detail.value
+        
+        this.newBatchFlowSchEndDate = event.detail.value
     }
 }

@@ -17,7 +17,7 @@
             </ul>
         </div>
         <div slot="header">
-            Create Schedule
+            {modalState} Schedule
         </div>
         <div class="slds-form">
             
@@ -51,6 +51,7 @@
                             name="input122" 
                             placeholder="MM/DD/YY.."
                             onchange={handleStartDateChange}
+                            value={newBatchFlowSchStartDate}
                             required
                         >
                         </lightning-input>
@@ -66,6 +67,7 @@
                                     name="input1223" 
                                     placeholder="MM/DD/YY.."
                                     onchange={handleEndDateChange}
+                                    value={newBatchFlowSchEndDate}
                                     required
                                 >
                                 </lightning-input>
@@ -111,7 +113,7 @@
                             name="input1"
                             onchange={handlePreferredStartTimeChange}
                             label="Preferred start time"
-                            required
+                            value={newBatchFlowSchPreferredStartTime}
                         >
                         </lightning-input>
                     </div>
@@ -161,7 +163,7 @@
                 <!-- <div class="slds-box slds-theme_default slds-hide">
                     <c-batch-flow_schedule-flow onscheduling={handleScheduling} flow-id={selectedFlow} ondoneloading={handleDoneLoading}></c-batch-flow_schedule-flow>
                 </div> -->
-                <div class="slds-box slds-theme_default">
+                <div class="slds-box slds-theme_default slds-hide">
                     <c-batch-flow_job-group group-id={selectedGroupId}></c-batch-flow_job-group>
                 </div>
             </template>
